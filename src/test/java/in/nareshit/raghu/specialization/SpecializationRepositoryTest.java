@@ -38,7 +38,6 @@ public class SpecializationRepositoryTest {
 		assertNotNull(spec.getId(),"Spec is not created!");
 	}
 	
-	
 	/**
 	 * 2. Test display all operation
 	 */
