@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import in.nareshit.raghu.entity.Specialization;
+import in.nareshit.raghu.exception.SpecializationNotFoundException;
 import in.nareshit.raghu.service.ISpecializationService;
 
 @Controller
@@ -70,23 +71,45 @@ public class SpecializationController {
 			RedirectAttributes attributes
 			) 
 	{
-		service.removeSpecialization(id);
-		attributes.addAttribute("message", "Record ("+id+") is removed");
+		try {
+			service.removeSpecialization(id);
+			attributes.addAttribute("message", "Record ("+id+") is removed");
+		} catch (SpecializationNotFoundException e) {
+			e.printStackTrace();
+			attributes.addAttribute("message", e.getMessage());
+		}
 		return "redirect:all";
 	}
 	
 	/**
 	 * 5. Fetch Data into Edit page
+	 *  End user clicks on Link, may enter ID manually.
+	 *  If entered id is present in DB
+	 *     > Load Row as Object
+	 *     > Send to Edit Page
+	 *     > Fill in Form
+	 *  Else
+	 *    > Redirect to all (Data Page)
+	 *    > Show Error message (Not found)     
 	 */
 	@GetMapping("/edit")
 	public String showEditPage(
 			@RequestParam Long id,
-			Model model
+			Model model,
+			RedirectAttributes attributes
 			) 
 	{
-		Specialization spec = service.getOneSpecialization(id);
-		model.addAttribute("specialization", spec);
-		return "SpecializationEdit";
+		String page = null;
+		try {
+			Specialization spec = service.getOneSpecialization(id);
+			model.addAttribute("specialization", spec);
+			page = "SpecializationEdit";
+		} catch (SpecializationNotFoundException e) {
+			e.printStackTrace();
+			attributes.addAttribute("message", e.getMessage());
+			page = "redirect:all";
+		}
+		return page;
 	}
 	
 	/***
