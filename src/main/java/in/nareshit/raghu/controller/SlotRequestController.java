@@ -1,5 +1,6 @@
 package in.nareshit.raghu.controller;
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -78,6 +79,17 @@ public class SlotRequestController {
 		List<SlotRequest> list = service.getAllSlotRequests();
 		model.addAttribute("list", list);
 		return "SlotRequestData";
+	}
+	
+	@GetMapping("/patient")
+	public String viewMyReq(
+			Principal principal,
+			Model model) 
+	{
+		String email = principal.getName();
+		List<SlotRequest> list = service.viewSlotsByPatientMail(email);
+		model.addAttribute("list", list);
+		return "SlotRequestDataPatient";
 	}
 	
 	@GetMapping("/accept")
