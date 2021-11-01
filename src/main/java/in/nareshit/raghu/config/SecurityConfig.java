@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/doctor/**").hasAuthority(UserRoles.ADMIN.name())
 		.antMatchers("/appointment/register","/appointment/save","/appointment/all").hasAuthority(UserRoles.ADMIN.name())
 		.antMatchers("/appointment/view","/appointment/viewSlot").hasAuthority(UserRoles.PATIENT.name())
+		.antMatchers("/slot/book").hasAuthority(UserRoles.PATIENT.name())
 		.antMatchers("/user/login","/login").permitAll()
 		
 		.anyRequest().authenticated()
