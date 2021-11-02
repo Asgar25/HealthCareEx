@@ -7,6 +7,9 @@ import in.nareshit.raghu.entity.SlotRequest;
 public interface ISlotRequestService {
 	//patient can book slot
 	Long saveSlotRequest(SlotRequest sr);
+	//fetch one
+	SlotRequest getOneSlotRequest(Long id);
+	
 	//ADMIN can view all slots
 	List<SlotRequest> getAllSlotRequests();
 	//ADMIN/patient can update status

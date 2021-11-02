@@ -16,12 +16,20 @@
                         <th>DATE</th>
                         <th>DOCTOR</th>
                         <th>STATUS</th>
+                        <th> </th>
                     </tr>
                 	<tr th:each="ob,i:${list}">
                 		<td>[[${i.count}]]</td>
                     	<td>[[${ob.appointment.date}]]</td>
                     	<td>[[${ob.appointment.doctor.firstName +' '+ob.appointment.doctor.lastName}]]</td>
-                    	<td>[[${ob.status}]]</td>
+                    	<td>
+                    	  	[[${ob.status}]]  
+                    	</td>
+                    	<td>
+                    		<th:block th:if="${ob.status=='ACCEPTED'}">
+                    			<a th:href="@{/slots/cancel(id=${ob.id})}" class="btn btn-danger">CANCEL </a>
+                    		</th:block>
+                    	</td>
                     </tr>
                 </table>
             </div>

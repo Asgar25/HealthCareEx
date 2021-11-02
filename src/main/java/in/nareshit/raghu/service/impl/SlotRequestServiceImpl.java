@@ -1,6 +1,7 @@
 package in.nareshit.raghu.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,14 @@ public class SlotRequestServiceImpl implements ISlotRequestService {
 	
 	public Long saveSlotRequest(SlotRequest sr) {
 		return repo.save(sr).getId();
+	}
+	
+	public SlotRequest getOneSlotRequest(Long id) {
+		Optional<SlotRequest> opt = repo.findById(id);
+		if(opt!=null) {
+			return opt.get();
+		}
+		return null;
 	}
 
 	public List<SlotRequest> getAllSlotRequests() {
