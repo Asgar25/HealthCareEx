@@ -21,6 +21,7 @@ import in.nareshit.raghu.entity.Specialization;
 import in.nareshit.raghu.exception.SpecializationNotFoundException;
 import in.nareshit.raghu.service.ISpecializationService;
 import in.nareshit.raghu.view.SpecializationExcelView;
+import in.nareshit.raghu.view.SpecializationPdfView;
 
 @Controller
 @RequestMapping("/spec")
@@ -179,6 +180,19 @@ public class SpecializationController {
 		List<Specialization> list = service.getAllSpecializations();
 		//send to Excel Impl class
 		m.addObject("list", list);
+		
+		return m;
+	}
+	
+	
+	/***
+	 * 9. export data to PDF file
+	 */
+	@GetMapping("/pdf")
+	public ModelAndView exportToPdf() {
+		ModelAndView m = new ModelAndView();
+		m.setView(new SpecializationPdfView());
+		// TODO : Fetch Data from DB and send to PDF
 		
 		return m;
 	}
