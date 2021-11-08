@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import in.nareshit.raghu.constants.SlotStatus;
 import in.nareshit.raghu.entity.Appointment;
@@ -25,6 +26,7 @@ import in.nareshit.raghu.service.IPatientService;
 import in.nareshit.raghu.service.ISlotRequestService;
 import in.nareshit.raghu.service.ISpecializationService;
 import in.nareshit.raghu.util.AdminDashboardUtil;
+import in.nareshit.raghu.view.InvoiceSlipPdfView;
 
 @Controller
 @RequestMapping("/slots")
@@ -172,6 +174,17 @@ public class SlotRequestController {
 		util.generateBar(path, list);
 		util.generatePie(path, list);
 		return "AdminDashboard";
+	}
+	@GetMapping("/invoice")
+	public ModelAndView generateInvoice(
+			@RequestParam Long id
+			) 
+	{
+		ModelAndView m = new ModelAndView();
+		m.setView(new InvoiceSlipPdfView());
+		SlotRequest slotRequest=service.getOneSlotRequest(id);
+		m.addObject("slotRequest", slotRequest);
+		return m;
 	}
 
 }
