@@ -19,8 +19,10 @@ import in.nareshit.raghu.entity.Patient;
 import in.nareshit.raghu.entity.SlotRequest;
 import in.nareshit.raghu.entity.User;
 import in.nareshit.raghu.service.IAppointmentService;
+import in.nareshit.raghu.service.IDoctorService;
 import in.nareshit.raghu.service.IPatientService;
 import in.nareshit.raghu.service.ISlotRequestService;
+import in.nareshit.raghu.service.ISpecializationService;
 
 @Controller
 @RequestMapping("/slots")
@@ -34,6 +36,12 @@ public class SlotRequestController {
 
 	@Autowired
 	private IPatientService patientService;
+	
+	@Autowired
+	private IDoctorService doctorService;
+	
+	@Autowired
+	private ISpecializationService specializationService;
 
 	// patient id, appointment id
 	@GetMapping("/book")
@@ -141,5 +149,14 @@ public class SlotRequestController {
 		return "redirect:patient";
 	}
 
+	@GetMapping("/dashboard")
+	public String adminDashboard(Model model) 
+	{
+		model.addAttribute("doctors",doctorService.getDoctorCount());
+		model.addAttribute("patients",patientService.getPatientCount());
+		model.addAttribute("appointments",appointmentService.getAppointmentCount());
+		model.addAttribute("specialization",specializationService.getSpecializationCount());
+		return "AdminDashboard";
+	}
 
 }
