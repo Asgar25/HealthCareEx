@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import in.nareshit.raghu.service.IDoctorService;
 import in.nareshit.raghu.service.IPatientService;
 import in.nareshit.raghu.service.ISlotRequestService;
 import in.nareshit.raghu.service.ISpecializationService;
+import in.nareshit.raghu.util.AdminDashboardUtil;
 
 @Controller
 @RequestMapping("/slots")
@@ -42,6 +44,13 @@ public class SlotRequestController {
 	
 	@Autowired
 	private ISpecializationService specializationService;
+	
+	@Autowired
+	private AdminDashboardUtil util;
+	
+	@Autowired
+	private ServletContext context;
+	
 
 	// patient id, appointment id
 	@GetMapping("/book")
@@ -156,6 +165,12 @@ public class SlotRequestController {
 		model.addAttribute("patients",patientService.getPatientCount());
 		model.addAttribute("appointments",appointmentService.getAppointmentCount());
 		model.addAttribute("specialization",specializationService.getSpecializationCount());
+
+		String path = context.getRealPath("/"); //root folder
+		
+		List<Object[]> list = service.getSlotsStatusAndCount();
+		util.generateBar(path, list);
+		util.generatePie(path, list);
 		return "AdminDashboard";
 	}
 
